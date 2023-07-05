@@ -12,6 +12,15 @@
 
 230428-092326 前几天搭建好的, mac 环境比较顺畅, 直接 cargo tauri dev 可以运行
 
+特别注意:
+
+  * 目前取版本号的方式是走 package.json , 对应代码:如下
+  
+```shell
+# https://github.com/hick/hir/actions/runs/5465066384/workflow#L22 
+echo "PACKAGE_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
+```
+
 # Tauri + Vue 3 + TypeScript
 
 This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
