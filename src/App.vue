@@ -26,7 +26,7 @@ function handleWindowTop() {
   console.log("==hiug old", datas.winTop);
   if (datas.winTop === '窗口置顶') {
     getCurrent().setAlwaysOnTop(true);
-    datas.winTop = '取消置顶!!!';
+    datas.winTop = '取消置顶@230705-234954';
   } else {
     getCurrent().setAlwaysOnTop(false);
     datas.winTop = '窗口置顶';
