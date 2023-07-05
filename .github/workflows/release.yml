@@ -43,7 +43,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [windows-latest]
+        platform: [macos-latest, ubuntu-20.04, windows-latest]
 
     runs-on: ${{ matrix.platform }}
     steps:
@@ -57,7 +57,7 @@ jobs:
 
       - name: Rust cache
         uses: Swatinem/rust-cache@v2
-       with:
+        with:
           workspaces: './src-tauri -> target'
 
       - name: Install Node.js
