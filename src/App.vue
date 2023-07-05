@@ -54,7 +54,8 @@ function handleWindowTop() {
     <p>
     
     Click on the Tauri, Vite, and Vue logos to learn more.
-    <a href="https://slyt8.cn/">链接到我的 portal</a>
+    <a href="https://slyt8.cn/">链接到我的 portal</a> | 
+    <a href="https://slyt8.cn/admin">登录</a> | 
     <a href="https://slyt8.cn/actions" target="_blank">新窗口打开</a>
     
     </p>
