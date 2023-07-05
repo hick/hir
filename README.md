@@ -14,10 +14,15 @@
 
 特别注意:
 
-  * 目前取版本号的方式是走 package.json , 对应代码:如下
+  * 目前取版本号的方式是走 package.json 中的 version , 对应代码:如下 =b01
+  * 因为提交的时候还是需要 git tag 来触发, 考虑这边版本号用第二个, git 的用第三个
+
+调试经验
+
+  * 点进某次 action 看详情, 可以大概看出问题在哪个步骤, 找对应关系跟官方版本的差别
   
 ```shell
-# https://github.com/hick/hir/actions/runs/5465066384/workflow#L22 
+# =b01 https://github.com/hick/hir/actions/runs/5465066384/workflow#L22 
 echo "PACKAGE_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
 ```
 
