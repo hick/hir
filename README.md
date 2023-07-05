@@ -14,6 +14,11 @@
 
 230428-092326 前几天搭建好的, mac 环境比较顺畅, 直接 cargo tauri dev 可以运行
 
+TODO
+
+  * 这个 github actions 是搜索来自别人的 github actions , 官方的还是值得理解以后再试试
+  * 考虑参考其他项目比如官方的, 还是把版本号改成按照自动 tag , 记录从 package.json 的取法即可
+
 几个设备的定位
 
   * macmini 可以编辑和提交 github

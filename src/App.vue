@@ -51,7 +51,13 @@ function handleWindowTop() {
       </a>
     </div>
 
-    <p>Click on the Tauri, Vite, and Vue logos to learn more.</p>
+    <p>
+    
+    Click on the Tauri, Vite, and Vue logos to learn more.
+    <a href="https://slyt8.cn/">链接到我的 portal</a>
+    <a href="https://slyt8.cn/actions" target="_blank">新窗口打开</a>
+    
+    </p>
 
     <p>
       Recommended IDE setup:
