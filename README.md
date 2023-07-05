@@ -1,6 +1,16 @@
 # hick
 
-2023-06-10 因为 windows 下搭建环境失败, 在 hick.mm 中有登记, 综合考虑必要性放弃这块不浪费时间了.
+2023-07-05 重新利用 github actions 能编译出 windows 版本来了.  这里也简单记录下, 目前比较弯绕, 待改进的方式如下:
+
+* 在 mac 上的 hick/rust/hir 下可以编辑调试
+* 有修改 rsync 同步到 mac ~/data/hir 下提交到 github
+* 然后 git tag v0.0.5 这样的约定格式
+* git push --tag 就可以出发 github 的 actions 自动编译了
+* 虽然在 hir@github web 界面的 release/draft a new release 也可以创建 tag 那个好像作为草稿跟其他地方容易冲突
+
+实际现在的做法跟官方的不大一样, 不清楚为什么, 更多详情参考 apps.mm#!github/github actions
+
+230428-092326 前几天搭建好的, mac 环境比较顺畅, 直接 cargo tauri dev 可以运行
 
 # Tauri + Vue 3 + TypeScript
 
@@ -18,7 +28,3 @@ Since TypeScript cannot handle type information for `.vue` imports, they are shi
 2. Reload the VS Code window by running `Developer: Reload Window` from the command palette.
 
 You can learn more about Take Over mode [here](https://github.com/johnsoncodehk/volar/discussions/471).
-
-## hick
-
-230428-092326 前几天搭建好的, mac 环境比较顺畅, 直接 cargo tauri dev 可以运行
