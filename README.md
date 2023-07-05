@@ -8,15 +8,24 @@
   - 然后 git tag v0.0.5 这样的约定格式
   - git push --tag 就可以出发 github 的 actions 自动编译了
 * web触发: hir@github web 界面的 release/draft a new release 
+  - 碰到恰好 yaml 格式错了, with 前面少来一个空格, 导致这边也不行, 实际那边没问题这里是可以正常触发构建的
 
 实际现在的做法跟官方的不大一样, 不清楚为什么, 更多详情参考 apps.mm#!github/github actions
 
 230428-092326 前几天搭建好的, mac 环境比较顺畅, 直接 cargo tauri dev 可以运行
 
+几个设备的定位
+
+  * macmini 可以编辑和提交 github
+  * deho 不配置 ssh key 失败无法提交 github
+  * mac 可以提交 github 也适合调试, 不过调试目录在 hick/rust/hir 而 github 在 ~/data/hir
+
+
 特别注意:
 
   * 目前取版本号的方式是走 package.json 中的 version , 对应代码:如下 =b01
   * 因为提交的时候还是需要 git tag 来触发, 考虑这边版本号用第二个, git 的用第三个
+  * 出现过实际出现了 linux 版本 .tar.gz 但是结果提示失败了
 
 调试经验
 
