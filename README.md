@@ -16,6 +16,7 @@
 
 TODO
 
+  * 禁用关闭按钮: 现在时不时不小心就关闭退出了, 想一直跑着, 提高关闭门槛, 参考 https://github.com/tauri-apps/tauri/issues/2353
   * 这个 github actions 是搜索来自别人的 github actions , 官方的还是值得理解以后再试试
   * 考虑参考其他项目比如官方的, 还是把版本号改成按照自动 tag , 记录从 package.json 的取法即可
 
