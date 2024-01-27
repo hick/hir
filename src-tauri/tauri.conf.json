@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "hir",
-    "version": "0.0.0"
+    "version": "0.1.99"
   },
   "tauri": {
     "allowlist": {
