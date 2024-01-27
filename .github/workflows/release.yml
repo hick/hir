@@ -43,7 +43,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [macos-latest, ubuntu-20.04, windows-latest]
+        platform: [macos-latest, windows-latest]
+        # 2024-01-27 delete "ubuntu-20.04" for errors in actions
 
     runs-on: ${{ matrix.platform }}
     steps:
