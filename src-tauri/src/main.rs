@@ -4,6 +4,7 @@
 use tauri::{Manager, GlobalShortcutManager};
 use tauri::{SystemTray, SystemTrayMenu, SystemTrayMenuItem, CustomMenuItem, SystemTrayEvent};
 use tauri::{Menu, MenuItem, Submenu};
+use chrono::prelude::*;
 
 // use tauri::{CustomMenuItem, SystemTray, SystemTrayMenu, SystemTrayMenuItem};
 
@@ -25,18 +26,22 @@ fn main() {
     let system_tray = SystemTray::new()
       .with_menu(tray_menu);
 
-    // 创建正常菜单, 参考官方 https://tauri.app/v1/guides/features/menu
+    // 创建正常全局菜单A: mac 的在屏幕顶部, win 在标题栏下面 参考官方 https://tauri.app/v1/guides/features/menu
     let quit2 = CustomMenuItem::new("quit2".to_string(), "Quit");
     let close2 = CustomMenuItem::new("close2".to_string(), "Close");
-    let submenu = Submenu::new("File", Menu::new().add_item(quit2).add_item(close2));
+    let sub_copy = CustomMenuItem::new("copy".to_string(), "Copy");
+    // 这里是一级 File 下面俩个子菜单
+    let menu_file = Submenu::new("File", Menu::new().add_item(quit2).add_item(close2));
+    let menu_edit = Submenu::new("Edit", Menu::new().add_item(sub_copy)); 
     let menu = Menu::new()
-      .add_native_item(MenuItem::Copy)
-      .add_item(CustomMenuItem::new("hide2", "Hide"))
-      .add_submenu(submenu);
+      .add_native_item(MenuItem::Copy) // 2024-01-28 这个实例可能有 bug 没看懂意义, win 下还乱了
+      .add_item(CustomMenuItem::new("hide2", "Hide"))  // 2024-01-28 这个 mac 下没看到,  win 下有也挺乱
+      .add_submenu(menu_file)
+      .add_submenu(menu_edit);
     
     // tauri::Builder::default() 创建一个默认设置的 Tauri 应用构建器
     tauri::Builder::default()
-        // 普通菜单: mac 下是左上角的菜单栏
+        // 创建正常全局菜单B: 普通菜单: mac 下是左上角的菜单栏
         .menu(menu)
         // .添加系统托盘的动作
         .system_tray(system_tray)
@@ -48,6 +53,35 @@ fn main() {
               ..
             } => {
               println!("system tray received a left click");
+              
+
+              // === 创建新窗口:  mac 下指定正常,  win 下主窗口可以这个不行
+              // 注意下面 label 动态变化方便每次生成一个, 名字不变的会第二次创建报错可能崩溃
+              // let docs_window = tauri::WindowBuilder::new(
+              let editor_window = tauri::WindowBuilder::new(
+                app,
+                format!("{}{}", "new_", Utc::now().format("%H%M%S-%f").to_string()), /* the unique window label */
+                tauri::WindowUrl::External("https://slyt8.cn/hms/contact/action?actionId=100&search=&op=info&infoid=".parse().unwrap())
+              ).build().unwrap();  // 2024-01-28 注意在原来 的位置这里 .unwrap() 是 ?
+              editor_window.set_closable(true).unwrap();
+              editor_window.set_always_on_top(true).unwrap();
+              let size: tauri::PhysicalSize<u32> = editor_window.inner_size().unwrap();
+              let new_width = (size.width as f64 * 0.8) as f64;
+              let new_height = (size.height as f64 * 0.5) as f64;
+              // editor_window.set_position(new_width, new_height).unwrap();
+              // let new_width = (size.width as f64 * scale) as f64;
+              // let new_height = (size.height as f64 * scale) as f64;
+              // // 调整窗口大小
+              editor_window.set_size(tauri::PhysicalSize { width: new_width, height: new_height }).unwrap();
+              // === 调整位置
+              // 获取当前窗口的位置
+              let position = editor_window.outer_position().unwrap();
+              // 计算新的位置
+              let new_x = position.x - 100;
+              let new_y = position.y + 100;
+              // 设置窗口位置
+              editor_window.set_position(tauri::PhysicalPosition { x: new_x, y: new_y }).unwrap();
+
             }
             SystemTrayEvent::RightClick {
               position: _,
@@ -90,33 +124,6 @@ fn main() {
             window.set_closable(false).expect("Failed to set window closable");
             // 设置置顶
             window.set_always_on_top(true).unwrap();
-
-            // 创建新窗口
-            // let docs_window = tauri::WindowBuilder::new(
-            let editor_window = tauri::WindowBuilder::new(
-              app,
-              "external", /* the unique window label */
-              tauri::WindowUrl::External("https://slyt8.cn/hms/contact/action?actionId=100&search=&op=info&infoid=".parse().unwrap())
-            ).build()?;
-            editor_window.set_closable(false).unwrap();
-            editor_window.set_always_on_top(true).unwrap();
-            let size: tauri::PhysicalSize<u32> = editor_window.inner_size().unwrap();
-            let new_width = (size.width as f64 * 0.8) as f64;
-            let new_height = (size.height as f64 * 0.5) as f64;
-            // editor_window.set_position(new_width, new_height).unwrap();
-            // let new_width = (size.width as f64 * scale) as f64;
-            // let new_height = (size.height as f64 * scale) as f64;
-            // // 调整窗口大小
-            editor_window.set_size(tauri::PhysicalSize { width: new_width, height: new_height }).unwrap();
-            // === 调整位置
-            // 获取当前窗口的位置
-            let position = editor_window.outer_position().unwrap();
-            // 计算新的位置
-            let new_x = position.x - 100;
-            let new_y = position.y + 100;
-            // 设置窗口位置
-            editor_window.set_position(tauri::PhysicalPosition { x: new_x, y: new_y }).unwrap();
-
 
             // 240127-041259 注册全局快捷键
             app.global_shortcut_manager()
