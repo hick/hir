@@ -13,8 +13,9 @@ async function greet() {
 
 <template>
   <div class="card">
-    <input id="greet-input" v-model="name" placeholder="Enter a name..." />
-    <button type="button" @click="greet()">Greet</button>
+    <button type="button" @click="greet()">Greet(输入文本后按这里为 JS 中调用 Rust 定义函数)</button>
+    <br />
+    <textarea id="greet-input"  style="width: 90%; height: 80px;" v-model="name" placeholder="Enter a name..." />
   </div>
 
   <p>{{ greetMsg }}</p>
