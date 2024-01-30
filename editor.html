@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1 id="header">Welcome from Tauri!</h1>
+    <div>
+      <a href="https://slyt8.cn/actions" target="_blank">actions in blank target</a>
+      <a href="https://slyt8.cn/actions">actions in self</a>
+    </div>
+    <script>
+      // === 检测是否支持 tauri 对象: 支持的花直接返回 tauri 对象
+      function withTauri() {
+        if (window.__TAURI__ && window.__TAURI__.tauri) {
+          // window.__TAURI__.tauri 可用
+          return window.__TAURI__.tauri
+        } else {
+          // window.__TAURI__.tauri 不可用
+          return false
+        }
+      }
+      if (withTauri()) {
+        // 控制 a 标签的 target 为 _blank  可以打开新窗口 A:  据说新版本为了安全考虑禁用了, 改成自己调用自己封装的
+        document.addEventListener('click', (e) => {
+          const target = e.target;
+          if (target.tagName === 'A' && (target.target === '_blank' || e.shiftKey)) {
+            e.preventDefault();
+            // 发送 URL 到后端
+            window.__TAURI__.invoke('open_external', { url: target.href });
+            e.preventDefault();
+            alert("调用 tauri 窗口打开 target 为 _blank 的了")
+            return false
+          }
+        });
+      } else {
+        alert("not in")
+      }
+
+
+      
+      // access the pre-bundled global API functions
+      const { invoke } = window.__TAURI__.tauri
+
+      // now we can call our Command!
+      // You will see "Welcome from Tauri" replaced
+      // by "Hello, World!"!
+      invoke('greet', { name: 'World' })
+        // `invoke` returns a Promise
+        .then((response) => {
+          window.header.innerHTML = response
+        })
+    </script>
+  </body>
+</html>

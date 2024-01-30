@@ -4,7 +4,7 @@
     "beforeBuildCommand": "pnpm build",
     "devPath": "http://localhost:1420",
     "distDir": "../dist",
-    "withGlobalTauri": false
+    "withGlobalTauri": true
   },
   "package": {
     "productName": "hir",
@@ -16,9 +16,9 @@
       "iconAsTemplate": true
     },
     "allowlist": {
-      "all": false,
+      "all": true, 
       "shell": {
-        "all": false,
+        "all": true,
         "open": true
       },
       "globalShortcut": {

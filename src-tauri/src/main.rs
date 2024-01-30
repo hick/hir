@@ -6,6 +6,8 @@ use tauri::{SystemTray, SystemTrayMenu, SystemTrayMenuItem, CustomMenuItem, Syst
 use tauri::{Menu, MenuItem, Submenu};
 use chrono::prelude::*;
 
+
+
 // use tauri::{CustomMenuItem, SystemTray, SystemTrayMenu, SystemTrayMenuItem};
 
 
@@ -13,6 +15,18 @@ use chrono::prelude::*;
 #[tauri::command]
 fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
+}
+
+// 控制 a 标签的 target 为 _blank  可以打开新窗口 B:
+#[tauri::command]
+fn open_external(app: tauri::AppHandle, url: String) {
+
+  let editor_window = tauri::WindowBuilder::new(
+    &app,
+    format!("{}{}", "blank_", Utc::now().format("%H%M%S-%f").to_string()), /* the unique window label */
+    tauri::WindowUrl::External(url.parse().unwrap())
+  ).build().unwrap();  // 2024-01-28 注意在原来 的位置这里 .unwrap() 是 ?
+  editor_window.set_always_on_top(true).unwrap();
 }
 
 fn main() {
@@ -35,6 +49,8 @@ fn main() {
     let menu_edit = Submenu::new("Edit", Menu::new().add_item(sub_copy)); 
     let menu = Menu::new()
       .add_native_item(MenuItem::Copy) // 2024-01-28 这个实例可能有 bug 没看懂意义, win 下还乱了
+      .add_native_item(MenuItem::Paste)
+      .add_native_item(MenuItem::Cut)
       .add_item(CustomMenuItem::new("hide2", "Hide"))  // 2024-01-28 这个 mac 下没看到,  win 下有也挺乱
       .add_submenu(menu_file)
       .add_submenu(menu_edit);
@@ -61,7 +77,8 @@ fn main() {
               let editor_window = tauri::WindowBuilder::new(
                 app,
                 format!("{}{}", "new_", Utc::now().format("%H%M%S-%f").to_string()), /* the unique window label */
-                tauri::WindowUrl::External("https://slyt8.cn/hms/contact/action?actionId=100&search=&op=info&infoid=".parse().unwrap())
+                // tauri::WindowUrl::External("https://slyt8.cn/hms/contact/action?actionId=100&search=&op=info&infoid=".parse().unwrap())
+                tauri::WindowUrl::App("editor.html".into())
               ).build().unwrap();  // 2024-01-28 注意在原来 的位置这里 .unwrap() 是 ?
               editor_window.set_closable(true).unwrap();
               editor_window.set_always_on_top(true).unwrap();
@@ -82,6 +99,13 @@ fn main() {
               // 设置窗口位置
               editor_window.set_position(tauri::PhysicalPosition { x: new_x, y: new_y }).unwrap();
 
+              // === 2024-01-30 长丝一个本地窗口
+              // let leditor_window = tauri::WindowBuilder::new(
+              //   app,
+              //   format!("{}{}", "init_edit_", Utc::now().format("%H%M%S-%f").to_string()), /* the unique window label */
+              //   tauri::WindowUrl::App("editor.html".into())
+              // ).build().unwrap();  // 2024-01-28 注意在原来 的位置这里 .unwrap() 是 ?
+              // leditor_window.set_always_on_top(true).unwrap();
             }
             SystemTrayEvent::RightClick {
               position: _,
@@ -139,8 +163,9 @@ fn main() {
                 .expect("Failed to register global shortcut");
             Ok(())
         })
-        // 定义了一个处理从 JavaScript 发送到 Rust 的消息的回调函数。在这个例子中，它注册了一个名为 “greet” 的命令。
-        .invoke_handler(tauri::generate_handler![greet])
+        // 定义了一个处理从 JavaScript 发送到 Rust 的消息的回调函数。在这个例子中，它注册了一个名为 “greet” 的命令
+        // 控制 a 标签的 target 为 _blank  可以打开新窗口 C
+        .invoke_handler(tauri::generate_handler![greet, open_external])
         // 这个函数启动 Tauri 应用程序。它使用 tauri::generate_context!() 宏来生成应用程序需要的上下文。
         .run(tauri::generate_context!())
         // 这个函数是 Rust 的 Result 类型的方法，用于处理可能的错误。如果 run 函数返回一个错误，它会停止程序的执行并打印一条错误消息。

@@ -33,6 +33,8 @@ function handleWindowTop() {
   }
 }
 
+
+
 </script> 
 
 <template>
@@ -57,7 +59,7 @@ function handleWindowTop() {
     <a href="https://slyt8.cn/">链接到我的 portal</a> | 
     <a href="https://slyt8.cn/admin">登录</a> | 
     <a href="https://slyt8.cn/hick">Wiki</a> | 
-    <a href="https://slyt8.cn/actions" target="_blank">新窗口打开任务</a>
+    <a href="https://slyt8.cn/actions" target="_blank">新窗口打开任务(出过 bug)</a>
     
     </p>
 

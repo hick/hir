@@ -1,5 +1,7 @@
 # hick
 
+本项目说先考虑实用性, 兼练手 Rust 用途, 可能相关处理比较丑陋, 根据其他时间和兴趣等安排, 持续改进和打磨.
+
 2023-07-05 重新利用 github actions 能编译出 windows 版本来了.  这里也简单记录下, 目前比较弯绕, 待改进的方式如下:
 
 * 在 mac 上的 hick/rust/hir 下可以编辑调试
@@ -14,13 +16,17 @@
 
 230428-092326 前几天搭建好的, mac 环境比较顺畅, 直接 cargo tauri dev 可以运行
 
-TODO
+## TODO
 
-  * 禁用关闭按钮: 现在时不时不小心就关闭退出了, 想一直跑着, 提高关闭门槛, 参考 https://github.com/tauri-apps/tauri/issues/2353
+  * 2024-01-28 菜单栏目前 mac/win 都有些问题
+  * p0 2024-01-29 发现之前可以的 a 标签用 target="_blank" 打开新窗口的现在不行了, 不知道为啥, 问过下 AI 似乎还是可以结合 tauri 控制; 同时按住 shift 也可以
+  * p1 2024-01-29 github actions 不知道怎么搞出来错误了, 但是实际都可以成功, 先忽略, 后续再探
+  * p0 2024-01-29 系统托盘单机打开的 editor window 使用本地窗口, 临时内容尝试 JS 保存 local storage 提供下拉列表可以选择(根据窗口 label + 时间)
+  * p1 2024-01-29 增加单元测试
   * 这个 github actions 是搜索来自别人的 github actions , 官方的还是值得理解以后再试试
   * 考虑参考其他项目比如官方的, 还是把版本号改成按照自动 tag , 记录从 package.json 的取法即可
 
-几个设备的定位
+## 平台问题
 
   * macmini 可以编辑和提交 github
   * deho 不配置 ssh key 失败无法提交 github
@@ -42,19 +48,8 @@ TODO
 echo "PACKAGE_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
 ```
 
-# Tauri + Vue 3 + TypeScript
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## change log
 
-## Recommended IDE Setup
-
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
-
-## Type Support For `.vue` Imports in TS
-
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's Take Over mode by following these steps:
-
-1. Run `Extensions: Show Built-in Extensions` from VS Code's command palette, look for `TypeScript and JavaScript Language Features`, then right click and select `Disable (Workspace)`. By default, Take Over mode will enable itself if the default TypeScript extension is disabled.
-2. Reload the VS Code window by running `Developer: Reload Window` from the command palette.
-
-You can learn more about Take Over mode [here](https://github.com/johnsoncodehk/volar/discussions/471).
+  * 2024-01-28 点击系统图盘图标动态的创建窗口
+  * 2024-01-27 支持菜单栏(Mac 上少俩个, win 前面俩个也不太正常)
